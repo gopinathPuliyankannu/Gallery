@@ -5,33 +5,11 @@ import { rootSaga } from "./sagas/root.saga";
 import { persistStore, persistReducer } from "redux-persist";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// import Realm from "realm";
-
 const persistConfig = {
   key: "root",
   storage: AsyncStorage,
   whitelist: ["galleryList"],
   blacklist: [],
-  // transforms: [
-  //   {
-  //     // Custom transform to handle Realm data
-  //     in: (state) => {
-  //       // Convert Realm results to plain objects for redux-persist
-  //       const tasks = realmInstance
-  //         .objects("Task")
-  //         .map((task) => ({ ...task }));
-  //       return { ...state, tasks };
-  //     },
-  //     out: (state) => {
-  //       // Save plain objects to Realm
-  //       realmInstance.write(() => {
-  //         state.tasks.forEach((task) => {
-  //           realmInstance.create("Task", task, Realm.UpdateMode.Modified);
-  //         });
-  //       });
-  //     },
-  //   },
-  // ],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

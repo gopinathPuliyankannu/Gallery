@@ -6,18 +6,20 @@
  */
 
 import React from "react";
-import { StyleSheet } from "react-native";
+import { ActivityIndicator, StyleSheet } from "react-native";
 import { getScreenWidth } from "../core/helper";
 import FastImage from "react-native-fast-image";
 
-function ImageComponent({ farm, server, secret, id }) {
+function ImageComponent({ farm, server, secret, id, fit }) {
   return (
     <FastImage
       source={{
         uri: `https://farm${farm}.staticflickr.com/${server}/${id}_${secret}.jpg`,
       }}
-      style={styles.tinyLogo}
+      style={fit ? styles.fitImages : styles.tinyLogo}
       resizeMode="cover"
+      onLoadStart={() => <ActivityIndicator />}
+      onLoadEnd={() => null}
     />
   );
 }
@@ -27,6 +29,10 @@ const styles = StyleSheet.create({
     height: getScreenWidth() / 3,
     width: getScreenWidth() / 2 - 20,
     resizeMode: "cover",
+    borderRadius: 10,
+  },
+  fitImages: {
+    height: getScreenWidth(),
   },
 });
 

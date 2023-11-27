@@ -1,8 +1,9 @@
 import * as actionTypes from "./action-types";
 
-export const getGalleryActions = (data) => ({
+export const getGalleryActions = (data, refresh) => ({
   type: actionTypes.GETGALLERY,
   payload: data,
+  refresh,
 });
 
 export const getCallerySuccess = (data) => ({

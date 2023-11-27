@@ -5,8 +5,16 @@ class TaskModel {
     name: "Task",
     properties: {
       id: "string",
+      owner: "string",
+      secret: "string",
+      server: "string",
+      farm: "int",
       title: "string",
-      completed: "bool",
+      ispublic: "int",
+      isfriend: "int",
+      isfamily: "int",
+      is_primary: "int",
+      has_comment: "int",
     },
   };
 }

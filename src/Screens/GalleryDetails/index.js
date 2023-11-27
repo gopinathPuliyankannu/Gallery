@@ -1,99 +1,60 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React, { useEffect, useState } from "react";
-
-import {
-  FlatList,
-  Image,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  Dimensions,
-  useColorScheme,
-  View,
-} from "react-native";
-
-const Width = Dimensions.get("screen").width;
+import { useRoute } from "@react-navigation/native";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+import ImageComponent from "../../components/ImageComponent";
 
 function GalleryDetails() {
-  const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
-
-  const getGallery = async () => {
-    try {
-      const response = await fetch(
-        "https://www.flickr.com/services/rest/?method=flickr.galleries.getPhotos&api_key=f9736f4d370f9c7115a952951b506569&gallery_id=66911286-72157647277042064&format=json&nojsoncallback=1"
-      );
-      const json = await response.json();
-      setData(json.photos?.photo);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getGallery();
-  }, []);
-
-  const renderList = ({ item }) => {
-    return (
-      <View
-        style={{
-          // flex: 1,
-          margin: 5,
-        }}
-      >
-        <Image
-          style={styles.tinyLogo}
-          source={{
-            uri: `https://farm${item.farm}.staticflickr.com/${item.server}/${item.id}_${item.secret}.jpg`,
-          }}
-        />
-      </View>
-    );
+  const {
+    params: { params },
+  } = useRoute();
+  const Details = {
+    Id: params.id,
+    Server: params.server,
+    Secret: params.secret,
+    owner: params.owner,
   };
 
   return (
-    <SafeAreaView>
-      <View style={styles.sectionContainer}>
-        <FlatList data={data} numColumns={2} renderItem={renderList} />
-      </View>
-    </SafeAreaView>
+    <View>
+      <ImageComponent
+        fit
+        farm={params.farm}
+        server={params.server}
+        id={params.id}
+        secret={params.secret}
+      />
+      <Text style={styles.Tittle}>{params.title}</Text>
+      {Object.entries(Details).map((item, index) => {
+        return (
+          <View key={index} style={styles.BlockContainer}>
+            <Text style={[styles.ServerText, styles.boldText]}>{item[0]}:</Text>
+            <Text style={styles.ServerText}>{item[1]}</Text>
+          </View>
+        );
+      })}
+    </View>
   );
 }
 
+export default GalleryDetails;
+
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  tinyLogo: {
-    height: Width / 3,
-    width: Width / 2 - 20,
-    resizeMode: "cover",
-  },
-  sectionContainer: {
-    // marginTop: 32,
-    paddingHorizontal: 10,
-  },
-  sectionTitle: {
+  Tittle: {
+    textAlign: "center",
     fontSize: 24,
-    fontWeight: "600",
+    padding: 10,
+    fontWeight: "bold",
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: "400",
+  BlockContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    margin: 10,
+    marginTop: 5,
   },
-  highlight: {
-    fontWeight: "700",
+  boldText: {
+    fontWeight: 600,
+  },
+  ServerText: {
+    fontSize: 20,
   },
 });
-
-export default GalleryDetails;
