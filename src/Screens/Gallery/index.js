@@ -1,10 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React, { useEffect, useState } from "react";
 import {
   FlatList,
@@ -46,7 +39,8 @@ function Gallery() {
     navigation.navigate("Details", { params: item });
   };
 
-  const renderList = ({ item }) => {
+  const renderList = (props) => {
+    const { item, index } = props;
     return (
       <TouchableOpacity style={styles.m_5} onPress={() => selectedImages(item)}>
         <ImageComponent
@@ -54,6 +48,7 @@ function Gallery() {
           server={item.server}
           id={item.id}
           secret={item.secret}
+          index={index}
         />
       </TouchableOpacity>
     );

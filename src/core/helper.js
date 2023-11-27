@@ -4,7 +4,7 @@ export const getScreenWidth = () => {
   return Dimensions.get("screen").width;
 };
 
-export const QueryParam = (params) => {
+export const queryParam = (params) => {
   const esc = encodeURIComponent;
   const query = Object.keys(params)
     .map((k) => `${esc(k)}=${esc(params[k])}`)

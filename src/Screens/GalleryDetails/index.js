@@ -7,6 +7,7 @@ function GalleryDetails() {
   const {
     params: { params },
   } = useRoute();
+
   const Details = {
     Id: params.id,
     Server: params.server,

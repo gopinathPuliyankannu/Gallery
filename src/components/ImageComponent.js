@@ -6,21 +6,42 @@
  */
 
 import React from "react";
-import { ActivityIndicator, StyleSheet } from "react-native";
+import { ActivityIndicator, Image, StyleSheet, View } from "react-native";
 import { getScreenWidth } from "../core/helper";
 import FastImage from "react-native-fast-image";
 
-function ImageComponent({ farm, server, secret, id, fit }) {
+function ImageComponent({ farm, server, secret, id, fit, index }) {
+  const [loadingstate, setloadingState] = React.useState({});
+
   return (
-    <FastImage
-      source={{
-        uri: `https://farm${farm}.staticflickr.com/${server}/${id}_${secret}.jpg`,
-      }}
-      style={fit ? styles.fitImages : styles.tinyLogo}
-      resizeMode="cover"
-      onLoadStart={() => <ActivityIndicator />}
-      onLoadEnd={() => null}
-    />
+    <>
+      <FastImage
+        source={{
+          uri: `https://farm${farm}.staticflickr.com/${server}/${id}_${secret}.png`,
+        }}
+        style={fit ? styles.fitImages : styles.tinyLogo}
+        resizeMode="cover"
+        onLoadStart={() =>
+          setloadingState(() => ({
+            ...loadingstate,
+            [index]: true,
+          }))
+        }
+        onLoadEnd={() =>
+          setloadingState((props) => ({
+            ...props,
+            [index]: false,
+          }))
+        }
+        onError={(e) => <ActivityIndicator color={"red"} />}
+      >
+        {loadingstate[index] && (
+          <View style={[styles.images, styles.tinyLogo]}>
+            <ActivityIndicator color={"red"} />
+          </View>
+        )}
+      </FastImage>
+    </>
   );
 }
 
@@ -33,6 +54,9 @@ const styles = StyleSheet.create({
   },
   fitImages: {
     height: getScreenWidth(),
+  },
+  images: {
+    justifyContent: "center",
   },
 });
 
